@@ -10,7 +10,7 @@ As you might guess the first provides the basic facility as well as automaticall
 
 ## The Basics
 For starters the ServiceFabricIntegration is designed to work with the Castle Windsor component model via facilities. As such an Installer is generally the best place to bootstrap ServiceFabricIntegration as shown below:
-```
+```csharp
 using Castle.Facilities.ServiceFabricIntegration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
@@ -43,7 +43,7 @@ Each of these methods relates to different phases of the CastleWindsor registrat
 As listed in The Basics, facility registration is simple. However ServiceFabricIntegration has the ability to add modules. Additional modules beyond Stateful and Stateless need to be added at facility registration time through `ServiceFabricFacility.Configure(Action<IServiceFabricFacilityConfigurer>)`.
 
 The general pattern to use is:
-```
+```csharp
 container.AddFacility<ServiceFabricFacility>(facility =>
   facility.Configure(config =>
     config.Using(new MyModule1(), new MyModule2(), ...)));
@@ -56,7 +56,7 @@ Because Reliable Services are the foundation of Azure ServiceFabric they are sup
 
 Multiple component model extension methods are available to trigger a component registration for inclusion as services.
   1. `ComponentRegistration<TService>.AsStatefulService(string, Action<IStatefulConfigurer> configure = null)`
-```
+```csharp
   container.Register(
     Component.For<MyStatefulService>()
              .AsStatefulService("MyStatefulServiceType", config =>
@@ -67,7 +67,7 @@ Multiple component model extension methods are available to trigger a component 
 Stateful service registration takes an optional Action delegate which can be used to specify initialization-time ReliableStateManager configuration settings.
 
   2. `ComponentRegistration<TService>.AsStatelessService(string)`
-```
+```csharp
   container.Register(
     Component.For<MyStatelessService>()
              .AsStatelessService("MyStatelessServiceType"));
@@ -75,7 +75,7 @@ Stateful service registration takes an optional Action delegate which can be use
 
 As shown the string passed in to each of these methods is the Type of your service, which must match what is declared in your ServiceManifest.xml.
 
-```
+```xml
   <ServiceTypes>
     <StatefulServiceType ServiceTypeName="MyStatefulServiceType" />
     <StatelessServiceType ServiceTypeName="MyStatelessServiceType" />
@@ -86,14 +86,14 @@ As shown the string passed in to each of these methods is the Type of your servi
 The other provided support is for Azure ServiceFabric Actors. This is a seperate package because there are different dependencies necessary to support Actors even though they require Reliable Services themselves.
 
 Adding actors requires a slight modification to the facility registration from earlier:
-```
+```csharp
 ...
   container.AddFacility<ServiceFabricFacility>(facility => facility.Configure(config => config.UsingActors()));
 ...
 ```
 
 And registration of actor types is very similar to services:
-```
+```csharp
   container.Register(
     Component.For<MyActor>()
              .AsActor()
@@ -112,7 +112,7 @@ __Note:__ ActorService is registered by the ActorModule by default, but any cust
 This extension variant overrides the registered ActorService with type `TService`.
 
   2. `ComponentRegistration<TActor>.AsActor(Action<IActorConfigurer> configure = null)`
-```
+```csharp
 Component.For<MyActor>()
          .AsActor(config =>
          {
