@@ -33,13 +33,13 @@
 
   <ItemGroup>
     <PackageReference Include="Castle.Core">
-      <Version>4.4.0</Version>
+      <Version>4.4.1</Version>
     </PackageReference>
     <PackageReference Include="Castle.Windsor">
-      <Version>5.0.0</Version>
+      <Version>5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.ServiceFabric.Services">
-      <Version>3.4.641</Version>
+      <Version>5.1.321</Version>
     </PackageReference>
   </ItemGroup>
 
